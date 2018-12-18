@@ -51,25 +51,43 @@ public class LivroBean implements Serializable {
 	public void gravarAutor() {
 		Autor autor = new DAO<Autor>(Autor.class).buscaPorId(this.autorId);
 		this.livro.adicionaAutor(autor);
+		System.out.println("Escrito por: " + autor.getNome());
 	}
 
 	public void gravar() {
 		System.out.println("Gravando livro " + this.livro.getTitulo());
 
 		if (livro.getAutores().isEmpty()) {
-			throw new RuntimeException("Livro deve ter pelo menos um Autor.");
+			FacesContext.getCurrentInstance().addMessage("autor",
+					new FacesMessage("Livro deve ter pelo menos um Autor."));
+			return;
 		}
 
-		new DAO<Livro>(Livro.class).adiciona(this.livro);
+		if (this.livro.getId() == null) {
+			new DAO<Livro>(Livro.class).adiciona(this.livro);
+		} else {
+			new DAO<Livro>(Livro.class).atualiza(this.livro);
+		}
 
 		this.livro = new Livro();
 	}
-	public void remover(Livro livro){
-		System.out.println("removendo Livro");
+
+	public void carregar(Livro livro) {
+		System.out.println("Carregando livro " + livro.getTitulo());
+		this.livro = livro;
+	}
+
+	public void remover(Livro livro) {
+		System.out.println("Removendo livro " + livro.getTitulo());
 		new DAO<Livro>(Livro.class).remove(livro);
 	}
-	public String formAutor(){
-		System.out.println("chamando o formulario do Autor");
+
+	public void removerAutorDoLivro(Autor autor) {
+		this.livro.removeAutor(autor);
+	}
+
+	public String formAutor() {
+		System.out.println("Chamanda do formulÃ¡rio do Autor.");
 		return "autor?faces-redirect=true";
 	}
 
@@ -79,8 +97,9 @@ public class LivroBean implements Serializable {
 		String valor = value.toString();
 		if (!valor.startsWith("1")) {
 			throw new ValidatorException(new FacesMessage(
-					"ISBN deveria começar com 1"));
+					"ISBN deveria comeÃ§ar com 1"));
 		}
 
 	}
+
 }
