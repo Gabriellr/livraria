@@ -97,7 +97,7 @@ public class LivroBean implements Serializable {
 	}
 
 	public String formAutor() {
-		System.out.println("Chamanda do formulário do Autor.");
+		System.out.println("Chamanda do formulário do Autor ....");
 		return "autor?faces-redirect=true";
 	}
 
@@ -107,7 +107,7 @@ public class LivroBean implements Serializable {
 		String valor = value.toString();
 		if (!valor.startsWith("1")) {
 			throw new ValidatorException(new FacesMessage(
-					"ISBN deveria começar com 1"));
+					"ISBN deveria começar com 1..."));
 		}
 
 	}
