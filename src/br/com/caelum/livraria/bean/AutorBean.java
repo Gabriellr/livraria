@@ -58,5 +58,6 @@ public class AutorBean {
 	
 	public void carregarAutorPelaId() {
 		this.autor = new DAO<Autor>(Autor.class).buscaPorId(autorId);
+ss 
 	}
 }
